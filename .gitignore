@@ -1,0 +1,30 @@
+# Per machine
+juce-config.cmake
+JUCEConfig.cmake
+paths.cmake
+
+# Generated
+Builds
+Build
+build
+JuceLibraryCode
+*.exe
+*.pdb
+
+# Doxygen
+Doxygen/doc
+Doxygen/resultPages
+
+# Windows Temp Cache Files
+[Tt]humbs.db
+
+# macOS Finder and whatnot
+.DS_Store
+*.DS_Store
+*.swp
+*~
+
+# VS/VS Code
+.vscode
+*.code-workspace
+.vs
