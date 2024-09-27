@@ -10,14 +10,13 @@
     license:            AGPL
     minimumCppStandard: 20
 
-    dependencies:       juce_core, juce_events
+    dependencies:       juce_gui_basics
 
  END_JUCE_MODULE_DECLARATION
 *******************************************************************************/
 
 #pragma once
 
-#include <juce_core/juce_core.h>
-#include <juce_events/juce_events.h>
+#include <juce_gui_basics/juce_gui_basics.h>
 
 #include "test_toast/test_toast.h"

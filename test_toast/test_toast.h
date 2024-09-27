@@ -90,9 +90,13 @@ private:
 // ============================================================================
 // Free functions
 
+/* Usage: jassert(notOnMessageThread() */
+bool notOnMessageThread();
+
 /* Run a function on the message thread and wait for it to finish */
 void synchronousAsync(auto funcToRun)
 {
+    jassert(notOnMessageThread());
     WaitableEvent event;
     auto decoratedFunc = [&]() {
         funcToRun();
@@ -103,5 +107,8 @@ void synchronousAsync(auto funcToRun)
 }
 
 void waitForMessageQueueToFinish();
+
+/* Get a basic mouse event on a component. */
+MouseEvent getMouseEvent(Component* eventComponent, uint8 numberOfClicks = 1);
 
 } // tst

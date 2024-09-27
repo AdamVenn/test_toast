@@ -11,12 +11,15 @@ BgTestRunner::BgTestRunner() :
 
 void BgTestRunner::run()
 {
+    // Called start without setting category
+    jassert(readyToGo);
     runner.runTestsInCategory(m_categoryName);
     MessageManager::callAsync(finishedCallback);
 }
 
-void BgTestRunner::setCategory(const String &categoryName)
+void BgTestRunner::setCategory(const String& categoryName)
 {
+    DBG("Background thread will run tests for category: " + categoryName);
     m_categoryName = categoryName;
     readyToGo = true;
 }
@@ -54,7 +57,7 @@ void UnitTestApp::shutdown()
     quit();
 }
 
-void UnitTestApp::anotherInstanceStarted(const String &commandLine)
+void UnitTestApp::anotherInstanceStarted(const String& /* commandLine */)
 {
 }
 
@@ -70,7 +73,7 @@ void UnitTestApp::resumed()
 {
 }
 
-void UnitTestApp::unhandledException(const std::exception *, const String &sourceFilename, int lineNumber)
+void UnitTestApp::unhandledException(const std::exception*, const String& /* sourceFilename */, int /* lineNumber */)
 {
 }
 
@@ -114,11 +117,43 @@ void UnitTestApp::testsFinished()
 // ============================================================================
 // Free functions
 
-void tst::waitForMessageQueueToFinish()
+
+bool notOnMessageThread()
 {
-    tst::synchronousAsync([]() {
+    if (auto mm = MessageManager::getInstanceWithoutCreating())
+    {
+        return !mm->isThisTheMessageThread();
+    }
+    else
+    {
+        return false;
+    }
+}
+
+void waitForMessageQueueToFinish()
+{
+    synchronousAsync([]() {
         ignoreUnused();
-        });
+    });
+}
+
+MouseEvent getMouseEvent(Component* eventComponent, uint8 numberOfClicks)
+{
+    return MouseEvent{
+        Desktop::getInstance().getMainMouseSource(), // MouseInputSource source,
+        Point<float>{ 1.f, 1.f }, // Point<float> position,
+        ModifierKeys{ 0 }, // ModifierKeys modifiers,
+        1.f, // float pressure,
+        0.f, 0.f, // float orientation, float rotation,
+        0.f, 0.f, // float tiltX, float tiltY,
+        eventComponent, // Component* eventComponent,
+        nullptr, // Component* originator,
+        Time{}, // Time eventTime,
+        Point<float>{ 1.f, 1.f }, // Point<float> mouseDownPos,
+        Time{}, // Time mouseDownTime,
+        numberOfClicks, // int numberOfClicks (private member)
+        false // bool mouseWasDragged
+    };
 }
 
 } // namespace tst
