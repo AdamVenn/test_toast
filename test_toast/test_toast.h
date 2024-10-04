@@ -35,12 +35,12 @@ public:
     BgTestRunner();
     virtual void run();
     void setCategory(const String& categoryName);
+    ConsoleUnitTestRunner runner;
 
 private:
     friend class UnitTestApp;
     String m_categoryName{};
     bool readyToGo{ false };
-    ConsoleUnitTestRunner runner;
     std::function<void()> finishedCallback;
 };
 
