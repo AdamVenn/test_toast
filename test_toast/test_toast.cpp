@@ -54,7 +54,6 @@ void UnitTestApp::shutdown()
 {
     runner.stopThread(1000);
     Logger::setCurrentLogger(nullptr);
-    quit();
 }
 
 void UnitTestApp::anotherInstanceStarted(const String& /* commandLine */)
